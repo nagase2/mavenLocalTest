@@ -3,7 +3,7 @@ apply plugin: "maven"
 apply plugin: 'eclipse'
 
 group = "myorgB"
-version = 1.1
+version = 1.2
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ configurations {
 }
 
 dependencies {
-	compile "myorgB:MavenRepoTest"
+	//compile "myorgB:MavenRepoTest"
     compile 'commons-codec:commons-codec:1.5'
 
    // compile sourceSets.api.output
