@@ -1,5 +1,5 @@
 /*.project
 /build/
 
-/*.gradle
+.gradle
 /bin/

@@ -1,0 +1,62 @@
+apply plugin: "java"
+apply plugin: "maven"
+
+group = "myorgA"
+version = 1.1
+
+repositories {
+    mavenCentral()
+    //mavenLocal()
+}
+
+
+
+sourceSets.all { set ->
+    def jarTask = task("${set.name}Jar", type: Jar) {
+        baseName = baseName + "-$set.name"+"s"
+        from set.output
+    }
+
+    artifacts {
+        archives jarTask
+    }
+}
+
+sourceSets {
+    api
+    impl
+}
+
+dependencies {
+    apiCompile 'commons-codec:commons-codec:1.5'
+
+    implCompile sourceSets.api.output
+    implCompile 'commons-lang:commons-lang:2.6'
+
+    testCompile 'junit:junit:4.9'
+    testCompile sourceSets.api.output
+    testCompile sourceSets.impl.output
+    runtime configurations.apiRuntime
+    runtime configurations.implRuntime
+    
+    runtime "org.apache.maven.wagon:wagon-ssh:2.2"
+    
+}
+
+jar {
+    from sourceSets.api.output
+    from sourceSets.impl.output
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+       // configuration = configurations.deployerJars
+        repository(url: "scp://172.19.6.90/") {
+            authentication(userName: "appuser01", password: "appuser01")
+        }
+        pom.version = '1.0Maven'
+        pom.artifactId = 'myMavenName'
+         
+    }
+}
+

@@ -1,0 +1,51 @@
+apply plugin: "java"
+apply plugin: "maven"
+apply plugin: 'eclipse'
+
+group = "myorgB"
+version = 1.1
+
+repositories {
+    mavenCentral()
+    //mavenLocal()
+    maven{
+     url "http://172.19.6.90/repo"
+     }
+}
+
+
+
+configurations {
+    deployerJars
+}
+
+dependencies {
+	compile "myorgB:MavenRepoTest"
+    compile 'commons-codec:commons-codec:1.5'
+
+   // compile sourceSets.api.output
+    compile 'commons-lang:commons-lang:2.6'
+
+    testCompile 'junit:junit:4.9'
+
+   
+    
+    deployerJars "org.apache.maven.wagon:wagon-ssh:2.2"
+    
+}
+
+
+uploadArchives {
+    repositories.mavenDeployer {
+       configuration = configurations.deployerJars
+   //    repository(url: "scp://172.19.6.90/home/appuser01") {
+   //         authentication(userName: "appuser01", password: "appuser01")
+    //    }
+         repository(url: "file://C:/repos")
+      //  pom.version = '1.0Maven'
+       // pom.artifactId = 'myMavenName'
+       
+         
+    }
+}
+
